@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:weather/weather.dart';
 
+import 'additional_info_item.dart';
+import 'hourly_forecast_item.dart';
+
 class WeatherScreen extends StatefulWidget {
   const WeatherScreen({super.key});
 
@@ -13,7 +16,7 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   @override
   Widget build(BuildContext context) {
-    String level = '90';
+
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +101,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
             SizedBox(
               height: 200, // Give the carousel a specific height
 
-              child: CarouselView(
+              child: const CarouselView(
                 // this is for the hourly weather forecast
                 itemExtent: 150, // Each weather card is 120 pixels wide
                 shrinkExtent: 150,
@@ -108,66 +111,14 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 elevation: 8, // adds a shadow to the cards
 
                 children: [
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('9 AM',style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                        SizedBox(height: 10),
-                        Icon(Icons.cloud, size: 40),
-                        SizedBox(height: 10),
-                        Text('100°F',),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('10 AM',style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                        SizedBox(height: 10),
-                        Icon(Icons.cloud, size: 40),
-                        SizedBox(height: 10),
-                        Text('100°F'),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('11 AM',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
-                        SizedBox(height: 10),
-                        Icon(Icons.cloud, size: 40),
-                        SizedBox(height: 10),
-                        Text('100°F'),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('12 PM',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
-                        SizedBox(height: 10),
-                        Icon(Icons.cloud, size: 40),
-                        SizedBox(height: 10),
-                        Text('100°F'),
-                      ],
-                    ),
-                  ),
-                  Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('13 PM',style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                        SizedBox(height: 10),
-                        Icon(Icons.cloud, size: 40),
-                        SizedBox(height: 10),
-                        Text('100°F'),
-                      ],
-                    ),
-                  ),
+
+                  HourlyForecastItem(time: "1 PM", icons: Icons.cloud, temperature: "100°F"),
+                  HourlyForecastItem(time: "2 PM", icons: Icons.cloud, temperature: "100°F"),
+                  HourlyForecastItem(time: "3 PM", icons: Icons.cloud, temperature: "100°F"),
+                  HourlyForecastItem(time: "4 PM", icons: Icons.cloud, temperature: "100°F"),
+                  HourlyForecastItem(time: "5 PM", icons: Icons.cloud, temperature: "100°F"),
+                  HourlyForecastItem(time: "6 PM", icons: Icons.cloud, temperature: "100°F"),
+
                 ],
               ),
             ),
@@ -183,99 +134,16 @@ class _WeatherScreenState extends State<WeatherScreen> {
               ),
             ),
 
-            Row(
+            const Row(
               crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               spacing: 15,
               children: [
-                SizedBox(
-                  // HUMIDITY INFO CARD
-                  height: 150,
-                  width: 120,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
+                AdditionalInfo(icon: Icons.water_drop_outlined, title: "Humidity", value: "90%"),
 
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      spacing: 4,
+                AdditionalInfo(icon: Icons.air, title: "Air Speed", value: "7.4 mph",),
 
-                      children: [
-                        Icon(Icons.water_drop, size: 40),
-                        SizedBox(height: 10),
-                        Text("Humidity", style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 5),
-                        Text(
-                          level,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(
-                  //WIND SPEED INFO CARD
-                  height: 150,
-                  width: 120,
-
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      spacing: 4,
-
-                      children: [
-                        Icon(Icons.air, size: 40),
-                        SizedBox(height: 10),
-                        Text("Wind Speed", style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 5),
-                        Text(
-                          "7.45 mph",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                SizedBox(
-                  //PRESSURE INFO CARD
-                  height: 150,
-                  width: 120,
-
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      spacing: 4,
-
-                      children: [
-                        Icon(Icons.speed, size: 40),
-                        SizedBox(height: 10),
-                        Text("Pressure", style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 5),
-                        Text(
-                          "1000",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                AdditionalInfo(icon: Icons.speed, title: "Pressure", value: "1013 hPa",),
 
                 // Placeholder(
                 //   fallbackHeight: 250, // if there is no child then this will be the height of the card as fallback but
