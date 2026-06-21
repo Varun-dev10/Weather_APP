@@ -15,17 +15,18 @@ class WeatherScreen extends StatefulWidget {
 class _WeatherScreenState extends State<WeatherScreen> {
   late Future<Map<String, dynamic>> weather;
 
+  String currentCity = "Bhilai";
+  final TextEditingController cityController = TextEditingController();
 
-  double temp = 0;
+
 
   // ai interview, polymarket
   Future<Map<String, dynamic>> getCurrentWeather() async {
     // future data comprises of map of  string and numbers
     try {
-      String cityName = "Bhilai";
       final res = await http.get(
         Uri.parse(
-          'https://api.openweathermap.org/data/2.5/forecast?q=$cityName&APPID=$openWeatherAPIKEY',
+          'https://api.openweathermap.org/data/2.5/forecast?q=$currentCity&APPID=$openWeatherAPIKEY',
         ),
       );
 
@@ -105,8 +106,40 @@ class _WeatherScreenState extends State<WeatherScreen> {
             leading: IconButton(
               //<---- leading is used to show icon on the app bar at the left side,, Tip to show multiple icon wrap with Row
               onPressed: () {
-                print("Search pressed"); // <--- call here to refresh
-                getCurrentWeather();
+                // 3. Show a dialog to enter city name
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text("Search City"),
+                    content: TextField(
+                      controller: cityController,
+                      decoration: const InputDecoration(
+                        hintText: "Enter city name",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          if (cityController.text.isNotEmpty) {
+                            setState(() {
+                              // Update currentCity and refresh the weather
+                              currentCity = cityController.text;
+                              weather = getCurrentWeather();
+                            });
+                            cityController.clear(); // Clear input for next time
+                            Navigator.pop(context); // Close the dialog
+                          }
+                        },
+                        child: const Text("Search"),
+                      ),
+                    ],
+                  ),
+                );
               },
               icon: Icon(Icons.search),
             ),
