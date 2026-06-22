@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/secrets.dart'; //<--- hidden folder contains API KEY
 import 'additional_info_item.dart';
 import 'hourly_forecast_item.dart';
@@ -241,7 +242,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                   ),
 
                   SizedBox(
-                    height: screenHeight * 0.20, // Give the carousel a specific height
+                    height: screenHeight * 0.18, // Give the carousel a specific height
 
                     // child: CarouselView(
                     //   // this is for the hourly weather forecast
@@ -263,9 +264,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     /*ListView.builder is a way to create a list where the items are generated dynamically
                        from your API data and efficiently (it only creates the items currently visible on the screen).*/
                     child: ListView.builder(
-                      itemCount: 5, // Show the next 5 hourly forecasts
+                      itemCount: 8, // Show the next 5 hourly forecasts
                       scrollDirection: Axis.horizontal,
-                      itemExtent: 150,
+                      itemExtent: 130,
                       itemBuilder: (context, index) {
                         // index + 1 because index 0 is the "current" weather we used at the top
                         final hourlyForecast = data['list'][index + 1];
@@ -276,12 +277,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
                         final time = DateTime.parse(hourlyForecast['dt_txt']);
 
                         return HourlyForecastItem(
+                          // time: "${time.hour}:00",
                           // You can format this time better using the 'intl' package later
-                          time: "${time.hour}:00",
+                          time: DateFormat.jm().format(time),
+                          //jm converts 24hr format into 12hr format with Am/Pm
                           icons: hourlySky == 'Clouds' || hourlySky == 'Rain'
                               ? Icons.cloud
                               : Icons.sunny,
                           temperature: "${hourlyTemp.toStringAsFixed(1)}°C",
+                          description: hourlySky,
                         );
                       },
                     ),
@@ -303,23 +307,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     spacing: 15,
                     children: [
-                      AdditionalInfo(
-                        icon: Icons.water_drop_outlined,
-                        title: "Humidity",
-                        value: "$currentHumidity%",
-                      ),
+                      AdditionalInfo(icon: Icons.water_drop_outlined, title: "Humidity", value: "$currentHumidity%",),
 
-                      AdditionalInfo(
-                        icon: Icons.air,
-                        title: "Air Speed",
-                        value: "${currentAirSpeed.toString()} kph",
-                      ),
+                      AdditionalInfo(icon: Icons.air, title: "Air Speed", value: "${currentAirSpeed.toString()} kph",),
 
-                      AdditionalInfo(
-                        icon: Icons.speed,
-                        title: "Pressure",
-                        value: currentPressure.toString(),
-                      ),
+                      AdditionalInfo(icon: Icons.speed, title: "Pressure", value: currentPressure.toString(),),
                     ],
                   ),
                 ],
