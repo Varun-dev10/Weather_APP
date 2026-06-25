@@ -71,7 +71,7 @@ A modern, high-performance weather application built with Flutter that provides 
 You can download and install the latest version of the app directly from the link below:
 
 > [!TIP]
-> **[Download Weather App APK](Assets/apk/app-release.apk)**
+> **[Download Weather App APK](Assets/apk)**
 > *(Note: You may need to enable "Install from Unknown Sources" on your Android device)*
 
 
